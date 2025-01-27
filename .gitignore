@@ -1,0 +1,60 @@
+# Binaries
+/bin/
+/obj/
+
+# User-specific files (VSCode settings)
+.vscode/
+
+# Visual Studio Code Workspace
+.vscode/*
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.lib
+*.ndk
+*.map
+*.dylib
+*.so
+*.plist
+
+# Coverage results
+coverage/
+*.coverage
+*.coveragexml
+*.codecov
+
+# Publish output
+.publish/
+
+# Temporary files
+*.tmp
+*.temp
+*.pid
+*.obj
+*.idb
+
+# JetBrains Rider settings
+.idea/
+*.sln.iml
+
+# Visual Studio workspace-related files
+.vs/
+*.sln.docstates
