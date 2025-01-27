@@ -58,3 +58,5 @@ coverage/
 # Visual Studio workspace-related files
 .vs/
 *.sln.docstates
+
+.env
