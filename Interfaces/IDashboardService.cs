@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TraskioApi.DTOs;
+using TodoApi.DTOs;
 
-namespace TraskioApi.Interfaces
+namespace TodoApi.Interfaces
 {
     public interface IDashboardService
     {
@@ -10,5 +10,7 @@ namespace TraskioApi.Interfaces
         Task<DashboardItemDTO> CreateDashboardAsync(CreateDashboardDTO createDashboardDTO);
         Task<bool> UpdateDashboardAsync(int id, UpdateDashboardDTO updateDashboardDTO);
         Task<bool> DeleteDashboardAsync(int id);
+        Task<bool> ValidateOwnershipAsync(int dashboardId, int userId);
+        Task<IEnumerable<DashboardItemDTO>> GetUserDashboardsAsync(int userId);
     }
 }

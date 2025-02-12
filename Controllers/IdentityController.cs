@@ -6,13 +6,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TraskioApi.DTOs;
+using TodoApi.DTOs;
 using Microsoft.Extensions.Configuration;
-using TraskioApi.Interfaces;
-using TraskioApi.Utils;
+using TodoApi.Interfaces;
+using TodoApi.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace TraskioApi.Controllers
+namespace TodoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

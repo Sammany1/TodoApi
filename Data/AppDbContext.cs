@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TraskioApi.Models;
+using TodoApi.Models;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class AppDbContext : DbContext
 {
@@ -10,6 +14,42 @@ public class AppDbContext : DbContext
     public DbSet<Dashboard> Dashboards { get; set; }
     public DbSet<Todo> Todos { get; set; }
     public DbSet<Subtask> Subtasks { get; set; }
+
+    public override int SaveChanges()
+    {
+        ConvertDatesToUtc();
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ConvertDatesToUtc();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ConvertDatesToUtc()
+    {
+        var entities = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+        foreach (var entity in entities)
+        {
+            var properties = entity.Entity.GetType().GetProperties()
+                .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(entity.Entity);
+                if (value != null)
+                {
+                    if (value is DateTime dateTime && dateTime.Kind != DateTimeKind.Utc)
+                    {
+                        property.SetValue(entity.Entity, DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+                    }
+                }
+            }
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

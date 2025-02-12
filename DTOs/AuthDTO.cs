@@ -1,4 +1,4 @@
-namespace TraskioApi.DTOs
+namespace TodoApi.DTOs
 {
     public class LoginDTO
     {

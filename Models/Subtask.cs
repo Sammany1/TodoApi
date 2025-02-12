@@ -1,6 +1,6 @@
 using System;
 
-namespace TraskioApi.Models;
+namespace TodoApi.Models;
 public class Subtask
 {
     public int Id { get; set; }

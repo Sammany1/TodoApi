@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using TraskioApi.Models;
+using TodoApi.Models;
 
-namespace TraskioApi.DTOs;
+namespace TodoApi.DTOs;
 public class SubtaskItemDTO
 {
     public int Id { get; set; }

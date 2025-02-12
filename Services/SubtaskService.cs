@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TraskioApi.Interfaces;
-using TraskioApi.Models;
-using TraskioApi.DTOs;
+using TodoApi.Interfaces;
+using TodoApi.Models;
+using TodoApi.DTOs;
 
-namespace TraskioApi.Services
+namespace TodoApi.Services
 {
     public class SubtaskService : ISubtaskService
     {
