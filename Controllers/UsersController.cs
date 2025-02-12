@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using TraskioApi.DTOs;
-using TraskioApi.Interfaces;
-using TraskioApi.Services;
+using TodoApi.DTOs;
+using TodoApi.Interfaces;
+using TodoApi.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace TraskioApi.Controllers
+namespace TodoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

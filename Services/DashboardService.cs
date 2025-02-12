@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TraskioApi.Interfaces;
-using TraskioApi.Models;
-using TraskioApi.DTOs;
+using TodoApi.Interfaces;
+using TodoApi.Models;
+using TodoApi.DTOs;
 
-namespace TraskioApi.Services
+namespace TodoApi.Services
 {
     public class DashboardService : IDashboardService
     {
@@ -66,6 +66,33 @@ namespace TraskioApi.Services
             _context.Dashboards.Remove(dashboard);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> ValidateOwnershipAsync(int dashboardId, int userId)
+        {
+            var dashboard = await _context.Dashboards
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.Id == dashboardId && d.UserId == userId);
+            return dashboard != null;
+        }
+
+        public async Task<IEnumerable<DashboardItemDTO>> GetUserDashboardsAsync(int userId)
+        {
+            return await _context.Dashboards
+                .AsNoTracking()
+                .TagWith("GetUserDashboards")
+                .Where(d => d.UserId == userId)
+                .Select(d => new DashboardItemDTO 
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Description = d.Description,
+                    UserId = d.UserId,
+                    Color = d.Color,
+                    CreatedAt = d.CreatedAt
+                })
+                .OrderBy(d => d.Id)
+                .ToListAsync();
         }
     }
 }

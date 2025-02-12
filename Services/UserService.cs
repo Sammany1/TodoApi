@@ -2,12 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TraskioApi.Utils;
-using TraskioApi.Interfaces;
-using TraskioApi.Models;
-using TraskioApi.DTOs;
+using TodoApi.Utils;
+using TodoApi.Interfaces;
+using TodoApi.Models;
+using TodoApi.DTOs;
 
-namespace TraskioApi.Services;
+namespace TodoApi.Services;
 public class UserService : IUserService
 {
     private readonly AppDbContext _context;

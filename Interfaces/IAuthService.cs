@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using TraskioApi.DTOs;
+using TodoApi.DTOs;
 
-namespace TraskioApi.Interfaces
+namespace TodoApi.Interfaces
 {
     public interface IAuthService
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TraskioApi.DTOs;
-using TraskioApi.Models;
+using TodoApi.DTOs;
+using TodoApi.Models;
 
-namespace TraskioApi.Interfaces;
+namespace TodoApi.Interfaces;
 public interface IUserService
 {
     Task<IEnumerable<UserItemDTO>> GetAllUsers();

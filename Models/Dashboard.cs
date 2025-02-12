@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TraskioApi.Models;
+namespace TodoApi.Models;
 public class Dashboard
 {
     public int Id { get; set; }
