@@ -2,12 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TraskioApi.Utils;
+using TraskioApi.Interfaces;
+using TraskioApi.Models;
+using TraskioApi.DTOs;
 
-public class UserService
+namespace TraskioApi.Services;
+public class UserService : IUserService
 {
-    private readonly UserDb _context;
+    private readonly AppDbContext _context;
 
-    public UserService(UserDb context)
+    public UserService(AppDbContext context)
     {
         _context = context;
     }
@@ -23,20 +28,22 @@ public class UserService
         return user != null ? new UserItemDTO(user) : null;
     }
 
-    public async Task CreateUserAsync(UserItemDTO userItemDTO)
+    public async Task<UserItemDTO> CreateUserAsync(CreateUserDTO createUserDTO)
     {
         var user = new User
         {
-            Username = userItemDTO.Username,
-            Password = userItemDTO.Password,
-            Email = userItemDTO.Email,
-            CreatedAt = userItemDTO.CreatedAt
+            Username = createUserDTO.Username,
+            Password = PasswordHasher.HashPassword(createUserDTO.Password),
+            Email = createUserDTO.Email
         };
+        
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        
+        return new UserItemDTO(user);
     }
 
-    public async Task<bool> UpdateUserAsync(int id, UserItemDTO userItemDTO)
+    public async Task<bool> UpdateUserAsync(int id, UpdateUserDTO updateUserDTO)
     {
         var user = await _context.Users.FindAsync(id);
         if (user == null)
@@ -44,10 +51,9 @@ public class UserService
             return false;
         }
 
-        user.Username = userItemDTO.Username;
-        user.Password = userItemDTO.Password;
-        user.Email = userItemDTO.Email;
-        user.CreatedAt = userItemDTO.CreatedAt;
+        user.Username = updateUserDTO.Username;
+        user.Email = updateUserDTO.Email;
+        
         await _context.SaveChangesAsync();
         return true;
     }
@@ -63,5 +69,18 @@ public class UserService
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<UserItemDTO?> GetUserByEmailAsync(string email)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
+        return user != null ? new UserItemDTO(user) : null;
+    }
+
+    public async Task<User?> GetFullUserByEmailAsync(string email) 
+    {
+        return await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 }

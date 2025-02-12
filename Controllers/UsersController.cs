@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
+using TraskioApi.DTOs;
+using TraskioApi.Interfaces;
+using TraskioApi.Services;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
-namespace MyAspNetCoreApp.Controllers
+namespace TraskioApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    [Route("[controller]")]
+    // [Authorize]
+    public class UsersController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await _userService.GetAllUsers();
-            return Ok(users);
         }
 
         [HttpGet("{id}")]
@@ -31,17 +30,10 @@ namespace MyAspNetCoreApp.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserItemDTO userItemDTO)
-        {
-            await _userService.CreateUserAsync(userItemDTO);
-            return CreatedAtAction(nameof(GetUser), new { id = userItemDTO.Id }, userItemDTO);
-        }
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserItemDTO userItemDTO)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDTO)
         {
-            var updated = await _userService.UpdateUserAsync(id, userItemDTO);
+            var updated = await _userService.UpdateUserAsync(id, updateUserDTO);
             if (!updated)
             {
                 return NotFound();

@@ -1,24 +1,57 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+
+public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+{
+    public void Configure(SwaggerGenOptions options)
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please provide a valid token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "Bearer"
+        });
+
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+    }
+}
+
 public static class SwaggerConfig
 {
     public static void AddSwaggerConfig(this IServiceCollection services)
     {
-        services.AddOpenApiDocument(config =>
-        {
-            config.DocumentName = "TodoAPI";
-            config.Title = "TodoAPI v1";
-            config.Version = "v1";
-        });
+        services.AddSwaggerGen();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
     }
 
     public static void UseSwaggerConfig(this IApplicationBuilder app)
     {
-        app.UseOpenApi();
-        app.UseSwaggerUi(config =>
+        app.UseSwagger();
+        app.UseSwaggerUI(config =>
         {
             config.DocumentTitle = "TodoAPI";
-            config.Path = "/swagger";
-            config.DocumentPath = "/swagger/{documentName}/swagger.json";
-            config.DocExpansion = "list";
+            config.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoAPI v1");
+            config.RoutePrefix = string.Empty;
         });
     }
 }
