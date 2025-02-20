@@ -11,7 +11,7 @@ using TodoApi.Interfaces;
 using TodoApi.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace TodoApi.Controllers
+namespace TraskioApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -41,7 +41,18 @@ namespace TodoApi.Controllers
             return Ok(dashboards);
         }
 
+        private int GetUserId()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int id))
+            {
+                throw new System.UnauthorizedAccessException("Invalid user token");
+            }
+            return id;
+        }
+
         [HttpGet("{id}")]
+        [DashboardOwner]
         public async Task<IActionResult> GetDashboard(int id)
         {
             var dashboard = await _dashboardService.GetDashboardAsync(id);
@@ -54,6 +65,14 @@ namespace TodoApi.Controllers
             return Ok(dashboard);
         }
 
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUserDashboards()
+        {
+            int userId = GetUserId();
+            var dashboards = await _dashboardService.GetUserDashboardsAsync(userId);
+            return Ok(dashboards);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateDashboard([FromBody] CreateDashboardDTO createDashboardDTO)
         {
@@ -63,6 +82,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [DashboardOwner]
         public async Task<IActionResult> UpdateDashboard(int id, [FromBody] UpdateDashboardDTO updateDashboardDTO)
         {
             var dashboard = await _dashboardService.GetDashboardAsync(id);
@@ -77,6 +97,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [DashboardOwner]
         public async Task<IActionResult> DeleteDashboard(int id)
         {
             var dashboard = await _dashboardService.GetDashboardAsync(id);
