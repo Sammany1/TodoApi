@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TodoApi.DTOs;
-using Microsoft.Extensions.Configuration;
 using TodoApi.Interfaces;
 using TodoApi.Utils;
 using Microsoft.Extensions.Logging;
@@ -20,13 +19,11 @@ namespace TodoApi.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(IUserService userService, IConfiguration configuration, ILogger<IdentityController> logger)
+        public IdentityController(IUserService userService, ILogger<IdentityController> logger)
         {
             _userService = userService;
-            _configuration = configuration;
             _logger = logger;
         }
 

@@ -14,10 +14,13 @@ namespace TodoApi.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardService _dashboardService;
+        private readonly int _userId;
+
 
         public DashboardController(IDashboardService dashboardService)
         {
             _dashboardService = dashboardService;
+            _userId = GetUserId();
         }
 
         private int GetUserId()
@@ -30,24 +33,25 @@ namespace TodoApi.Controllers
             return id;
         }
 
-        [HttpGet("{id}")]
-        [DashboardOwner]
-        public async Task<IActionResult> GetDashboard(int id)
-        {
-            var dashboard = await _dashboardService.GetDashboardAsync(id);
-            if (dashboard == null)
-            {
-                return NotFound();
-            }
-            return Ok(dashboard);
-        }
-
         [HttpGet("user")]
         public async Task<IActionResult> GetUserDashboards()
         {
             int userId = GetUserId();
             var dashboards = await _dashboardService.GetUserDashboardsAsync(userId);
             return Ok(dashboards);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDashboard(int id)
+        {
+            var dashboard = await _dashboardService.GetDashboardAsync(id);
+            if (dashboard == null)
+                return NotFound();
+
+            if (dashboard.UserId != _userId)
+                return Forbid();
+
+            return Ok(dashboard);
         }
 
         [HttpPost]
@@ -59,27 +63,31 @@ namespace TodoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [DashboardOwner]
         public async Task<IActionResult> UpdateDashboard(int id, [FromBody] UpdateDashboardDTO updateDashboardDTO)
         {
-            var updated = await _dashboardService.UpdateDashboardAsync(id, updateDashboardDTO);
-            if (!updated)
-            {
+            var dashboard = await _dashboardService.GetDashboardAsync(id);
+            if (dashboard == null)
                 return NotFound();
-            }
-            return NoContent();
+
+            if (dashboard.UserId != _userId)
+                return Forbid();
+
+            var updated = await _dashboardService.UpdateDashboardAsync(id, updateDashboardDTO);
+            return updated ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
-        [DashboardOwner]
         public async Task<IActionResult> DeleteDashboard(int id)
         {
-            var deleted = await _dashboardService.DeleteDashboardAsync(id);
-            if (!deleted)
-            {
+            var dashboard = await _dashboardService.GetDashboardAsync(id);
+            if (dashboard == null)
                 return NotFound();
-            }
-            return NoContent();
+
+            if (dashboard.UserId != _userId)
+                return Forbid();
+
+            var deleted = await _dashboardService.DeleteDashboardAsync(id);
+            return deleted ? NoContent() : NotFound();
         }
     }
 }

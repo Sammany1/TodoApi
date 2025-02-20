@@ -10,5 +10,6 @@ namespace TodoApi.Interfaces
         Task<SubtaskItemDTO> CreateSubtaskAsync(CreateSubtaskDTO createSubtaskDTO);
         Task<bool> UpdateSubtaskAsync(int id, UpdateSubtaskDTO updateSubtaskDTO);
         Task<bool> DeleteSubtaskAsync(int id);
+        // Task<bool> ValidateOwnershipAsync(int subtaskId, int userId);
     }
 }

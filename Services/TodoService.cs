@@ -72,5 +72,11 @@ namespace TodoApi.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        // public async Task<bool> ValidateOwnershipAsync(int todoId, int userId)
+        // {
+        //     var todo = await _context.Todos.FindAsync(todoId);
+        //     return todo != null && todo.Dashboard.UserId == userId;
+        // }
     }
 }

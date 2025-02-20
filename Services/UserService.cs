@@ -84,13 +84,13 @@ public class UserService : IUserService
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task<UserItemDTO?> ValidateUser(string email, string password)
-    {
-        var user = await GetFullUserByEmailAsync(email);
-        if (user == null || !PasswordHasher.VerifyPassword(password, user.Password))
-        {
-            return null;
-        }
-        return new UserItemDTO(user);
-    }
+    // public async Task<UserItemDTO?> ValidateUser(string email, string password)
+    // {
+    //     var user = await GetFullUserByEmailAsync(email);
+    //     if (user == null || !PasswordHasher.VerifyPassword(password, user.Password))
+    //     {
+    //         return null;
+    //     }
+    //     return new UserItemDTO(user);
+    // }
 }

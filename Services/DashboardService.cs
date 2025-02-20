@@ -6,6 +6,22 @@ using TodoApi.Interfaces;
 using TodoApi.Models;
 using TodoApi.DTOs;
 
+
+// always retun todos with all their subtasks nested 
+
+// in the first of the app return only dashboard info
+// then when user select a dashboard return all todos with their subtasks nested
+
+// and for updates and delete, do it by specific id endpoint
+
+// any (dashboard) search or sort happen by the client --because there are already loaded in the client--
+
+// global search and sort 
+// beacause its a todo app and all the info are simple text we can load all the data in the client when user do the search and sort there
+// maybe we can implement later a filter and sort in the server side but for now we can do it in the client side
+
+
+
 namespace TodoApi.Services
 {
     public class DashboardService : IDashboardService
@@ -68,14 +84,6 @@ namespace TodoApi.Services
             return true;
         }
 
-        public async Task<bool> ValidateOwnershipAsync(int dashboardId, int userId)
-        {
-            var dashboard = await _context.Dashboards
-                .AsNoTracking()
-                .FirstOrDefaultAsync(d => d.Id == dashboardId && d.UserId == userId);
-            return dashboard != null;
-        }
-
         public async Task<IEnumerable<DashboardItemDTO>> GetUserDashboardsAsync(int userId)
         {
             return await _context.Dashboards
@@ -94,5 +102,13 @@ namespace TodoApi.Services
                 .OrderBy(d => d.Id)
                 .ToListAsync();
         }
+
+        // public async Task<bool> ValidateOwnershipAsync(int dashboardId, int userId)
+        // {
+        //     var dashboard = await _context.Dashboards
+        //         .AsNoTracking()
+        //         .FirstOrDefaultAsync(d => d.Id == dashboardId && d.UserId == userId);
+        //     return dashboard != null;
+        // }
     }
 }

@@ -10,7 +10,7 @@ namespace TodoApi.Interfaces
         Task<DashboardItemDTO> CreateDashboardAsync(CreateDashboardDTO createDashboardDTO);
         Task<bool> UpdateDashboardAsync(int id, UpdateDashboardDTO updateDashboardDTO);
         Task<bool> DeleteDashboardAsync(int id);
-        Task<bool> ValidateOwnershipAsync(int dashboardId, int userId);
         Task<IEnumerable<DashboardItemDTO>> GetUserDashboardsAsync(int userId);
+        // Task<bool> ValidateOwnershipAsync(int dashboardId, int userId);
     }
 }

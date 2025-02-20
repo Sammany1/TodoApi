@@ -13,5 +13,5 @@ public interface IUserService
     Task<bool> DeleteUserAsync(int id);
     Task<UserItemDTO?> GetUserByEmailAsync(string email);
     Task<User?> GetFullUserByEmailAsync(string email); 
-    Task<UserItemDTO?> ValidateUser(string email, string password);
+    // Task<UserItemDTO?> ValidateUser(string email, string password);
 }
